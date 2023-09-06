@@ -1,6 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 '''
-Create a simple GUI to display and save readings for the Radio Shack 
+Create a simple GUI to display and save readings for the Radio Shack
 22-812 digital multimeter.
 
 When the Start button is pressed, the data are written to the log file.
@@ -80,12 +80,12 @@ def TipFormatter(tip, length=50):
         else:
             s += line + "\n"
             line = f + " "
-    s += line 
+    s += line
     return s
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, id):
-        wx.Frame.__init__(self, parent, id, "meter.py", 
+        wx.Frame.__init__(self, parent, id, "meter.py",
             size=(settings["frame size horiz"], settings["frame size vert"]))
         self.interval = 0
         self.panel = wx.Panel(self)
@@ -118,28 +118,28 @@ class MyFrame(wx.Frame):
         style = BT.BT_LEAVE
         self.tips = {}
         dict = settings["tips"]
-        self.tips["Start"] = [BT.BalloonTip(topicon=None, 
-            toptitle="Start button", 
+        self.tips["Start"] = [BT.BalloonTip(topicon=None,
+            toptitle="Start button",
             message=TipFormatter(dict["Start"]),
             shape=shape, tipstyle=style),
             self.start]
-        self.tips["Set"] = [BT.BalloonTip(topicon=None, 
-            toptitle="Set button", 
+        self.tips["Set"] = [BT.BalloonTip(topicon=None,
+            toptitle="Set button",
             message=TipFormatter(dict["Set"]),
             shape=shape, tipstyle=style),
             self.set]
-        self.tips["Textbox"] = [BT.BalloonTip(topicon=None, 
-            toptitle="Sampling interval", 
+        self.tips["Textbox"] = [BT.BalloonTip(topicon=None,
+            toptitle="Sampling interval",
             message=TipFormatter(dict["Textbox"]),
             shape=shape, tipstyle=style),
             self.rate]
-        self.tips["Reading"] = [BT.BalloonTip(topicon=None, 
-            toptitle="Reading", 
+        self.tips["Reading"] = [BT.BalloonTip(topicon=None,
+            toptitle="Reading",
             message=TipFormatter(dict["Reading"]),
             shape=shape, tipstyle=style),
             self.reading]
-        self.tips["Time stamp"] = [BT.BalloonTip(topicon=None, 
-            toptitle="Time stamp", 
+        self.tips["Time stamp"] = [BT.BalloonTip(topicon=None,
+            toptitle="Time stamp",
             message=TipFormatter(dict["Time stamp"]),
             shape=shape, tipstyle=style),
             self.timestamp]
@@ -160,12 +160,12 @@ class MyFrame(wx.Frame):
     def sampling(self):
         # Text box for sampling interval
         ratetext = wx.StaticText(self.panel, -1, "Sample rate", style=wx.ALIGN_CENTER)
-        self.rate = wx.TextCtrl(self.panel, -1, 
+        self.rate = wx.TextCtrl(self.panel, -1,
             settings["default sample rate"], size=(50, 20))
         # Choice box for units
         units = wx.StaticText(self.panel, -1, "units", style=wx.ALIGN_CENTER)
         self.unit_choices = ["seconds", "minutes", "hours"]
-        self.units = wx.ListBox(self.panel, -1, (20, 20), (80, 50), 
+        self.units = wx.ListBox(self.panel, -1, (20, 20), (80, 50),
             self.unit_choices, wx.LB_SINGLE)
         self.units.SetSelection(0)
         choice_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -184,7 +184,7 @@ class MyFrame(wx.Frame):
 
     def time_stamp(self):
         # Static text control for the time stamp
-        self.timestamp = wx.StaticText(self.panel, -1, "", 
+        self.timestamp = wx.StaticText(self.panel, -1, "",
             size = (settings["frame size horiz"],
                     settings["time font size"]*font_factor),
             style=wx.ALIGN_CENTER|wx.ST_NO_AUTORESIZE)
@@ -196,7 +196,7 @@ class MyFrame(wx.Frame):
 
     def reading(self):
         # Static text control for the reading
-        self.reading = wx.StaticText(self.panel, -1, "0.0 V", 
+        self.reading = wx.StaticText(self.panel, -1, "0.0 V",
             size = (settings["frame size horiz"],
                     settings["reading font size"]*font_factor),
             style=wx.ALIGN_CENTER|wx.ST_NO_AUTORESIZE)
@@ -237,7 +237,7 @@ class MyFrame(wx.Frame):
         # Reset the timer
         self.sbtimer = Timer(1, self.UpdateStatusBar)
         self.sbtimer.start()
-        
+
     def CurrentTime(self):
         return strftime("%d%b%Y-%H:%M:%S")
 
@@ -321,9 +321,7 @@ class MyFrame(wx.Frame):
         self.Destroy()
 
 if __name__ == "__main__":
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = MyFrame(parent=None, id=-1)
     frame.Show()
     app.MainLoop()
-
-

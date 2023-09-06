@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 '''
 A python interface for the Radio Shack 22-812 digital multimeter.  You will
 also need to download and install the PySerial module (see
@@ -121,8 +121,13 @@ class RS22812(object):
         self.sp = serial.Serial(com_port-1, baudrate, timeout=0)
 
     def __del__(self):
-        if self.sp:
-            self.sp.close()
+        print("FIXME: self.sp.close() creates an error here!")
+    # FIXME(jeff): How are we to de-allocate our class without this method??
+    # Python3 errors here when we uncomment this. I do not know why.
+    # AttributeError: 'RS22812' object has no attribute 'sp'
+    # def __del__(self):
+        # if self.sp:
+            # self.sp.close()
 
     def get_packet(self):
         '''This routine follows the logic of the algorithm given on page 2
@@ -152,8 +157,8 @@ class RS22812(object):
             # I have no idea why the article adds this number in for the
             # checksum, but it seems to work.
             constant = 57
-            checksum = (sum([ord(c) for c in packet[:-1]]) + constant) & 255
-            if checksum != ord(packet[8]):
+            checksum = (sum([(c) for c in packet[:-1]]) + constant) & 255
+            if checksum != (packet[8]):
                 self.sp.dsrdtr = False
                 sleep(sleep_time)
                 continue
@@ -229,7 +234,7 @@ class RS22812(object):
         '''
         if string == None:
             return None
-        bytes = [ord(i) for i in string]
+        bytes = [(i) for i in string]
         # Byte 0:  mode
         modes = ("DC V", "AC V", "DC uA", "DC mA", "DC A", "AC uA",
             "AC mA", "AC A", "ohm", "CAP", "Hz", "NET Hz", "AMP Hz",
@@ -275,7 +280,7 @@ class RS22812(object):
     def DumpPacket(self, packet):
         s = ""
         for i in xrange(len(packet)):
-            s += "%3d " % ord(packet[i])
+            s += "%3d " % (packet[i])
         return s
 
     def GetReading(self):
@@ -283,7 +288,7 @@ class RS22812(object):
         # reading, return None.
         packet = self.get_packet()
         if 0:  # Turn on to see individual bytes
-            print self.DumpPacket(packet)
+            print(self.DumpPacket(packet))
         return self.InterpretReading(packet)
 
 if __name__ == "__main__":
@@ -303,5 +308,5 @@ if __name__ == "__main__":
     while True:
         count += 1
         r = rs.GetReading()
-        print TimeNow() + " [%d]" % count, r
+        print(TimeNow() + " [%d]" % count, r)
         sleep(interval)
